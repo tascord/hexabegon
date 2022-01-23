@@ -1,0 +1,50 @@
+
+let count = 0;
+chrome.storage.sync.get('count', (result) => {
+    count = result.count;
+});
+
+// Update count every 30s
+setInterval(() => {
+    chrome.storage.sync.set({ count: count });
+}, 30000);
+
+// Look for scrolling
+// TODO: Replace with listening for network loading
+window.addEventListener('scroll', () => {
+
+    // Keep track of how many are being removed
+    let moron_count = 0;
+
+    // Fetch hexagon profile pictures
+    const morons = [
+        ...document.
+            querySelectorAll(`[style='clip-path: url("#hex-hw-shapeclip-clipconfig"); height: calc(100% - 4px); width: calc(100% - 4px);']`)
+    ].forEach(
+        moron => {
+
+            // TODO: Find a better way to get encapsulating tweet.
+            // TODO: Support other tweet types (Comments?).
+            const parent = moron.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+
+            // Hide if not already hidden
+            if(parent.style.display != 'none') {
+                parent.style.display = 'none';
+                moron_count++;
+            }
+
+        }
+    );
+
+    if(moron_count == 0) return;
+
+    // Add to count
+    count += moron_count;
+
+    // Alert user
+    console.log(`Removed ${moron_count} hexagon${moron > 1 ? 's' : ''} from timeline`);
+
+})
+
+// This code was tested at
+// https://twitter.com/search?q=%23NewNFTProfilePic&src=trend_click&vertical=trends

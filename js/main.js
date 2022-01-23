@@ -23,20 +23,31 @@ window.addEventListener('scroll', () => {
     ].forEach(
         moron => {
 
-            // TODO: Find a better way to get encapsulating tweet.
-            // TODO: Support other tweet types (Comments?).
-            const parent = moron.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+            try {
 
-            // Hide if not already hidden
-            if(parent.style.display != 'none') {
-                parent.style.display = 'none';
-                moron_count++;
+                // TODO: Find a better way to get encapsulating tweet.
+                // TODO: Support other tweet types (Comments?).
+                const parent = moron.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+
+                // Hide if not already hidden
+                if (parent.style.display != 'none') {
+                    parent.style.display = 'none';
+                    moron_count++;
+                }
+
+            } catch (e) {
+
+                console.log('Something unexpected happened while hiding tweet. Please report this @ https://github.com/tascord/hexabegon/issues');
+                
+                console.log('Error: ', e);
+                console.log('Moron (Hexagonal PFP): ', moron);
+
             }
 
         }
     );
 
-    if(moron_count == 0) return;
+    if (moron_count == 0) return;
 
     // Add to count
     count += moron_count;

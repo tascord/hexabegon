@@ -1,13 +1,14 @@
 
 let count = 0;
-chrome.storage.sync.get('count', (result) => {
-    count = result.count;
+chrome.storage.sync.get(['count'], (result) => {
+    count = result.count ?? 0;
 });
 
-// Update count every 30s
+// Update count every 15s
 setInterval(() => {
+    console.log(`Updated hexagon count to ${count}`);
     chrome.storage.sync.set({ count: count });
-}, 30000);
+}, 15000);
 
 // Look for scrolling
 // TODO: Replace with listening for network loading
@@ -53,7 +54,7 @@ window.addEventListener('scroll', () => {
     count += moron_count;
 
     // Alert user
-    console.log(`Removed ${moron_count} hexagon${moron > 1 ? 's' : ''} from timeline`);
+    console.log(`Removed ${moron_count} hexagon${moron_count > 1 ? 's' : ''} from timeline`);
 
 })
 
